@@ -1,3 +1,6 @@
+#ifndef INCLUDES_H
+#define INCLUDES_H
+
 #include <openssl/bio.h>
 #include <openssl/evp.h>
 #include <stdlib.h>
@@ -11,3 +14,5 @@
 #define yellow "\e[33m"
 #define cyan "\e[36m"
 #define normal "\e[0m"
+
+#endif // INCLUDES_H
