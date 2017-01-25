@@ -91,7 +91,7 @@ int main(int argc, char *argv[]){
     setup s;
     if(argc==3 || argc==5){
         string flag_find = argv[1],  to_enc = argv[2], salt, xor_pass, xor_pass_2, stripped_salt, encrypted_fin;
-        if(flag_find.find("-e") != -1){
+        if(flag_find.find("-e") != -1 && argc==3){
             if(et.base64_encode(to_enc).size() > stoi(s.max_key_length)){
                 cout << "Using max key length of " << stoi(s.max_key_length) << " chars" << endl;
                 xor_pass =  et.datagen((rand()%(stoi(s.max_key_length)-stoi(s.max_key_length)/2 + 1) + stoi(s.max_key_length)/2));
@@ -113,12 +113,21 @@ int main(int argc, char *argv[]){
             cout << "First XOR pass being used: " << xor_pass << endl;
             cout << "Second XOR pass being used: " << xor_pass_2 << endl;
             stripped_salt = e.strip_salt(et.base64_decode(e.encrypt_decrypt(et.base64_decode(to_enc), et.base64_decode(xor_pass_2))));
-            cout << "Decrypted string: " << et.base64_decode(e.encrypt_decrypt(et.base64_decode(stripped_salt), et.base64_decode(xor_pass)))  << endl; //black code
+            if(e.strip_salt(et.base64_decode(e.encrypt_decrypt(et.base64_decode(to_enc), et.base64_decode(xor_pass_2)))).size() == 0 ){
+                cout << "Second XOR password is incorrect" << endl;
+            }
+            else{
+                if(et.base64_decode(e.encrypt_decrypt(et.base64_decode(stripped_salt), et.base64_decode(xor_pass))).size()==0){
+                    cout << "First XOR password is incorrect" << endl;
+                }
+                else{
+                     cout << "Decrypted string: " << et.base64_decode(e.encrypt_decrypt(et.base64_decode(stripped_salt), et.base64_decode(xor_pass)))  << endl; //black code
+                }
+            }
         }
     } else{
       cout << "Program name, string to enc ex: ./a.out -e \"string to encrypt\"" << endl;  
-      cout << "Program name, string to decrypt ex: ./a.out -d \"string to encrypt\" \"xorpass1\" \"xorpass2\" " << endl;
+      cout << "Program name, string to decrypt xor_pwd_1 xor_pwd_2 ex: ./a.out -d \"string to encrypt\" \"xorpass1\" \"xorpass2\" " << endl;
     }
-    
     return 0;
 }
