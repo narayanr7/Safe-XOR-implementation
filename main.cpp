@@ -24,7 +24,7 @@ class enc_tools{
         }
         return gendata;
     };
-    string base64_encode( const string &str ) // *possible memory leak* http://stackoverflow.com/questions/342409/how-do-i-base64-encode-decode-in-c
+    string base64_encode( const string &str ) // http://stackoverflow.com/questions/342409/how-do-i-base64-encode-decode-in-c
     {
         BIO *base64_filter = BIO_new( BIO_f_base64() );
         BIO_set_flags( base64_filter, BIO_FLAGS_BASE64_NO_NL );
@@ -39,7 +39,7 @@ class enc_tools{
         BIO_free_all( bio );
         return result;
     };
-    string base64_decode( const string &str ) // *possible memory leak* http://stackoverflow.com/questions/342409/how-do-i-base64-encode-decode-in-c
+    string base64_decode( const string &str ) // http://stackoverflow.com/questions/342409/how-do-i-base64-encode-decode-in-c
     {
         BIO *bio, *base64_filter, *bio_out;
         char inbuf[512];
@@ -73,7 +73,7 @@ class enc{
         {
             output[i] = to_encrypt[i] ^ key[i % (sizeof(key) / sizeof(char))];
         }
-        return output; // implied memory release
+        return output;
     };
     string strip_salt(string encrypted_msg){
         vector<string> salt_strip_vect;
